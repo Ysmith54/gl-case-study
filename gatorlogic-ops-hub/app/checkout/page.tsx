@@ -28,7 +28,7 @@ export default function CheckoutPage() {
       quantity: item.quantity,
     }));
 
-    const { data, error } = await supabase.rpc("create_order", {
+    const { data: orderId, error } = await supabase.rpc("create_order", {
       p_customer_name: customerName,
       p_customer_contact: customerContact,
       p_notes: notes,
@@ -39,9 +39,26 @@ export default function CheckoutPage() {
       setError(error.message);
       setLoading(false);
     } else {
+        const emailPayload = {
+            orderId: orderId,
+            customerName: customerName,
+            customerContact: customerContact,
+            total: totalPriceCents,
+            items: items.map(item => ({
+            name: item.product.name,
+            quantity: item.quantity,
+            price_cents: item.product.price_cents
+        }))
+        };
+    
+        // Fire and forget (don't await, so the user isn't blocked if email fails)
+        supabase.functions.invoke('send-order-email', { body: emailPayload })
+            .catch(err => console.error("Email notification failed:", err));
+        // -------------------------------------
+
       clearCart();
       // Store order ID in session storage for the success page to display
-      sessionStorage.setItem("last_order_id", data);
+      sessionStorage.setItem("last_order_id", orderId as string);
       router.push("/checkout/success");
     }
   };
