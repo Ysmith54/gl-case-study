@@ -33,17 +33,24 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">
-      <header className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-3xl font-semibold tracking-tight">Order Online</h1>
-        <p className="mt-2 text-neutral-600">
-          Freshly roasted, shipped weekly. Pickup available at the roastery.
-        </p>
-        <Link
-          href="/cart"
-          className="inline-flex shrink-0 items-center justify-center rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 transition-colors"
-        >
-          Cart ({totalItems})
-        </Link>
+      <header className="mb-12 grid grid-cols-1 items-center gap-6 sm:grid-cols-2">
+        {/* Left Column: Text */}
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight">Order Online</h1>
+          <p className="mt-2 text-neutral-600">
+            Freshly roasted, shipped weekly. Pickup available at the roastery.
+          </p>
+        </div>
+        
+        {/* Right Column: Cart Button */}
+        <div className="flex sm:justify-end">
+          <Link
+            href="/cart"
+            className="inline-flex shrink-0 items-center justify-center rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 transition-colors"
+          >
+            Cart ({totalItems})
+          </Link>
+        </div>
       </header>
 
       {loading && <p className="text-neutral-500">Loading products…</p>}
