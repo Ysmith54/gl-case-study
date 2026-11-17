@@ -22,8 +22,8 @@ serve(async (req) => {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'GatorLogic Demo <onboarding@your-verified-domain.com>', // Use your verified domain
-        to: ['your-operator-email@example.com'], // Where you want to receive alerts
+        from: 'GatorLogic Demo <hello@gatorlogic.io>', // Use your verified domain
+        to: ['requests@gatorlogic.io'], // Where you want to receive alerts
         subject: `New Order Received: ${customerName} (${orderId.slice(0, 8)})`,
         html: `
           <h2>New Order from ${customerName}</h2>
@@ -31,7 +31,7 @@ serve(async (req) => {
           <p><strong>Total:</strong> $${(total / 100).toFixed(2)}</p>
           <h3>Items:</h3>
           <ul>${itemsHtml}</ul>
-          <p><a href="https://your-demo-url.com/admin">View in Dashboard</a></p>
+          <p><a href="https://demo.gatorlogic.io/admin">View in Dashboard</a></p>
         `,
       }),
     })
