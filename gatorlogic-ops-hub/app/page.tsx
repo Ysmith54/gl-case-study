@@ -3,7 +3,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { useCart } from "@/context/CartContext";
 import type { Product } from "@/lib/types";
 
 const formatPrice = (cents: number) =>
@@ -14,6 +16,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+   const { addToCart, totalItems } = useCart();
 
   useEffect(() => {
     (async () => {
@@ -30,11 +33,17 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">
-      <header className="mb-12">
+      <header className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-3xl font-semibold tracking-tight">Order Online</h1>
         <p className="mt-2 text-neutral-600">
           Freshly roasted, shipped weekly. Pickup available at the roastery.
         </p>
+        <Link
+          href="/cart"
+          className="inline-flex shrink-0 items-center justify-center rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 transition-colors"
+        >
+          Cart ({totalItems})
+        </Link>
       </header>
 
       {loading && <p className="text-neutral-500">Loading products…</p>}
@@ -60,10 +69,9 @@ export default function Home() {
               )}
               <div className="mt-4 flex items-center justify-between">
                 <span className="font-semibold">{formatPrice(p.price_cents)}</span>
-                <button
-                  disabled
-                  className="rounded-md bg-neutral-900 px-3 py-1.5 text-sm text-white opacity-50"
-                  title="Cart arrives in Session 2"
+                 <button
+                  onClick={() => addToCart(p)}
+                  className="cursor-pointer rounded-md bg-neutral-900 px-3 py-1.5 text-sm text-white hover:bg-neutral-800 transition-colors"
                 >
                   Add to cart
                 </button>
