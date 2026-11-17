@@ -1,1 +1,0 @@
-# gl-case-study
